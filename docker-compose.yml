@@ -1,0 +1,28 @@
+version: '3'
+
+services: 
+  web:
+    image: nginx
+    ports: 
+      - 80:80
+    volumes: 
+      - ./nginx/app.conf:/etc/nginx/nginx.conf
+    depends_on: 
+      - app
+  
+  db:
+    image: postgres
+    restart: always
+    environment: 
+      POSTGRES_PASSWORD: junior
+    volumes: 
+      - ./postgres_data:/var/lib/postgresql/data
+    ports: 
+      - 5432
+    
+  app:
+    image: adalbertorsilvajr/app-node-dockerizado
+    build: .
+    depends_on: 
+      - db
+
